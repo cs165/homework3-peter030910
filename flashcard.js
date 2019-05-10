@@ -10,12 +10,15 @@ class Flashcard {
   constructor(containerElement, frontText, backText) {
     this.containerElement = containerElement;
 
+    const flashcardDrag = document.querySelector('#flashcard-container');
     this._flipCard = this._flipCard.bind(this);
-
     this.flashcardElement = this._createFlashcardDOM(frontText, backText);
     this.containerElement.append(this.flashcardElement);
-
-    this.flashcardElement.addEventListener('pointerup', this._flipCard);
+    flashcardDrag.addEventListener('pointerup', this._flipCard);
+    this.flashcardCorrect = document.querySelector('.correct');
+    this.flashcardInCorrect = document.querySelector('.incorrect');
+    this.flashcardInCorrect.textContent = '0';
+    this.flashcardCorrect.textContent = '0';
   }
 
   // Creates the DOM object representing a flashcard with the given
@@ -53,5 +56,39 @@ class Flashcard {
 
   _flipCard(event) {
     this.flashcardElement.classList.toggle('show-word');
+  }
+  show(){
+    this.flashcardElement.classList.toggle('inactive');
+  }
+  hide(){
+    this.flashcardElement.classList.add('inactive');
+  }
+  remove(){
+    this.flashcardElement.remove();
+  }
+
+  setInitRecord(){
+    this.flashcardCorrect.textContent = '0';
+    this.flashcardInCorrect.textContent = '0';
+  }
+  setinitWrongRecord(numCorrect){
+    const flashcardCorrect = document.querySelector('.correct');
+    this.flashcardCorrect.textContent = '' + numCorrect + '';
+    const flashcardInCorrect = document.querySelector('.incorrect');
+    flashcardInCorrect.textContent = '0';
+  }
+  setRecord(right,wrong,rightStatus,wrongStatus){
+    if(rightStatus===false)return;
+    if(wrongStatus===false)return;
+    right += parseInt(this.flashcardCorrect.textContent);
+    wrong += parseInt(this.flashcardInCorrect.textContent);
+    this.flashcardCorrect.textContent = '' + right + '';
+    this.flashcardInCorrect.textContent = '' + wrong + '';
+  }
+  getCorrectRecord(){
+    return parseInt(this.flashcardCorrect.textContent);
+  }
+  getInCorrectRecord(){
+    return parseInt(this.flashcardInCorrect.textContent);
   }
 }

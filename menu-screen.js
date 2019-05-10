@@ -10,7 +10,6 @@ class MenuScreen {
   constructor(containerElement) {
     this.containerElement = containerElement;
   }
-
   show() {
     this.containerElement.classList.remove('inactive');
   }

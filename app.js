@@ -18,12 +18,34 @@ class App {
     const resultElement = document.querySelector('#results');
     this.results = new ResultsScreen(resultElement);
 
-    // Uncomment this pair of lines to see the "flashcard" screen:
-    // this.menu.hide();
-    // this.flashcards.show();
-
-    // Uncomment this pair of lines to see the "results" screen:
-    // this.menu.hide();
-    // this.results.show();
+    this.continuePlay = this.continuePlay.bind(this);
+    this.backtomenu = this.backtomenu.bind(this);
+    this.results.continueButton.addEventListener('click',this.continuePlay);
+    this.results.backButton.addEventListener('click',this.backtomenu);
+    
+  }
+  continuePlay(event){
+    if(this.results.getButtonContinue()==='Continue'){
+    this.results.hide();
+    //this.flashcards.initWrongRecord();
+    this.flashcards.show();
+    this.flashcards.showReserveFirst();
+    }
+    else{
+      this.results.hide();
+      this.flashcards.initRecord();
+      this.flashcards.setIsContinue(false);
+      this.flashcards.initReserveList();
+      const menuChoices = document.querySelector('#choices');
+      console.log(this.flashcards.lastplayDeck);
+      menuChoices.children[this.flashcards.lastplayDeck].click();
+    }
+  }
+  backtomenu(){
+      this.results.hide();
+      this.flashcards.initRecord();
+      this.flashcards.setIsContinue(false);
+      this.flashcards.initReserveList();
+      this.menu.show();
   }
 }
